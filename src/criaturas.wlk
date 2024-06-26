@@ -5,7 +5,21 @@ import estudiantes.*
 class Criatura{
 	var salud
 	
+	method salud() = salud
+	
 	method recibir(hechizo){
-		salud -= hechizo.reduccionDeSalud()
+		self.disminuirSalud(hechizo.reduccionDeSalud())
 	}
+	
+	method disminuirSalud(cantidad){
+		salud -= cantidad
+	}
+	
+	method aumentarSalud(cantidad){
+		salud += cantidad
+	}
+}
+
+class Inmune inherits Criatura{
+	override method recibir(hechizo){}
 }

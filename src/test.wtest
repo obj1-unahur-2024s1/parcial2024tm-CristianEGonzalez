@@ -1,0 +1,57 @@
+import hechizos.*
+import criaturas.*
+import estudiantes.*
+import casas.*
+import materias.*
+
+describe "test de jarry postre"{
+	
+const inmobilus = new Hechizo(nivelDeDificultad=5)
+const sangre = new OrbeFulminante(nivelDeDificultad=25)
+const imperius = new Imperdonable(nivelDeDificultad=15,danioAutoinflingido=100)
+
+const centauro = new Criatura(salud=200)
+const hipoglifo = new Criatura(salud=250)
+const basilisco = new Criatura(salud=800)
+
+const harry = new Estudiante(casa=gryffindor,habilidad=35,salud=200,sangrePura=false)
+const ron = new Estudiante(casa=gryffindor,habilidad=6,salud=80,sangrePura=false)
+const draco = new Estudiante(casa=slytherin,habilidad=40,salud=250,sangrePura=true)
+
+const artesOscuras = new Materia(profesor="Snape",hechizo=imperius)
+
+	test "harry no puede lanzar imperius sin aprenderlo" {
+		assert.throwsExceptionWithMessage("No tienes lo necesario para ejecutar este hechizo", {harry.hacerHechizoA(imperius,centauro)})
+	}
+
+	test "harry lanza inmobilus a centauro"{
+		harry.aprender(inmobilus)
+		harry.hacerHechizoA(inmobilus,centauro)
+		assert.equals(185,centauro.salud())
+	}
+	
+	test "harry lanza imperius a centauro"{
+		harry.aprender(imperius)
+		harry.hacerHechizoA(imperius,centauro)
+		assert.equals(150,centauro.salud())
+	}
+	
+	test "ron y harry se anotan a artes oscuras y aprenden imperius pero ron no tiene habilidad para lanzarlo"{
+		assert.equals(imperius, artesOscuras.hechizo())
+		artesOscuras.anotar(harry)
+		artesOscuras.anotar(ron)
+		assert.equals([harry,ron], artesOscuras.alumnos())
+		artesOscuras.dictarMateria()
+		ron.conoce(imperius)
+		harry.conoce(imperius)
+		assert.throwsExceptionWithMessage("No tienes lo necesario para ejecutar este hechizo", {ron.hacerHechizoA(imperius,centauro)})
+	}
+	
+	test "hacen practica en artes oscuras contra un basilisco"{
+		artesOscuras.anotar(harry)
+		artesOscuras.anotar(draco)
+		artesOscuras.dictarMateria()
+		artesOscuras.hacerPractica(basilisco)
+		assert.equals(700, basilisco.salud())
+	}
+}
