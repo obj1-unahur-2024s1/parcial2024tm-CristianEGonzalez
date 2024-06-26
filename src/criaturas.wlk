@@ -1,5 +1,3 @@
-// < >
-import casas.*
 import estudiantes.*
 
 class Criatura{
@@ -12,7 +10,7 @@ class Criatura{
 	}
 	
 	method disminuirSalud(cantidad){
-		salud -= cantidad
+		salud = 0.max(salud - cantidad)
 	}
 	
 	method aumentarSalud(cantidad){

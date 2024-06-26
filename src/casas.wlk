@@ -1,9 +1,4 @@
-import criaturas.*
 import estudiantes.*
-
-//class Casa{
-//	method peligrosos()
-//}
 
 object gryffindor{
 	method peligroso(estudiante) = false

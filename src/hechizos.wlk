@@ -26,7 +26,7 @@ class Sectum inherits Hechizo{
 	override method requerimiento(estudiante) =
 		!estudiante.esPeligroso()
 	
-	override method consecuencia(persona){persona.habilidad(persona.habilidad()-1)}
+	override method consecuencia(persona){persona.disminuirHabilidad()}
 	
 }
 
@@ -38,7 +38,8 @@ class OrbeFulminante inherits Hechizo{
 
 	override method consecuencia(estudiante){
 		estudiante.cambiarDeCasa()
-		estudiante.disminuirSalud(estudiante.salud()-1) //Lo deja con 1 de salud
+		//Deja al estudiante en 1 de salud
+		estudiante.disminuirSalud(estudiante.salud()-1) 
 	}
 
 }

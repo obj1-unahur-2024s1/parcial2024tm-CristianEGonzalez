@@ -3,6 +3,8 @@ class Materia{
 	var hechizo
 	const property alumnos = []
 	
+	method hechizo() = hechizo
+	
 	method hacerPractica(criatura){
 		alumnos.forEach({ a => a.hacerHechizoA(hechizo,criatura) })
 	}
@@ -14,10 +16,9 @@ class Materia{
 	method dictarMateria(){
 		alumnos.forEach({ a =>
 			a.aprender(hechizo)
+			a.aumentarHabilidad()
 		})
 	}
-	
-	method hechizo() = hechizo
 	
 	method cambiarHechizo(nuevoHechizo){
 		hechizo = nuevoHechizo

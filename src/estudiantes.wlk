@@ -1,23 +1,28 @@
 import criaturas.*
 import casas.*
+import hechizos.*
+import materias.*
 
 class Estudiante{
 	var salud
-	var property habilidad
+	var habilidad
 	var casa
 	const property hechizos = []
-	const sangrePura
+	const property esSangrePura
 	
 	method salud() = salud
-	
-	method inscribirse(materia){
-		self.aprender(materia.hechizo())
-		habilidad += 1
-		materia.anotar(self)
-	}
+	method casa() = casa
+	method habilidad() = habilidad
 	
 	method aprender(hechizo){
 		hechizos.add(hechizo)
+	}
+	
+	method aumentarHabilidad(){
+		habilidad += 1
+	}
+	method disminuirHabilidad(){
+		habilidad -= 1
 	}
 	
 	method hacerHechizoA(hechizo,alguien){
@@ -39,14 +44,12 @@ class Estudiante{
 	
 	method esExperimentado() = habilidad > 10
 	
-	method esSangrePura() = sangrePura
-	
 	method recibir(hechizo){
 		self.disminuirSalud(hechizo.reduccionDeSalud())
 	}
 	
 	method disminuirSalud(cantidad){
-		salud -= cantidad
+		salud = 0.max(salud - cantidad)
 	}
 	
 	method aumentarSalud(cantidad){
