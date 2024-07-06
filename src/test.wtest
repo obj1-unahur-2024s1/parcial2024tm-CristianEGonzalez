@@ -1,0 +1,95 @@
+import hechizos.*
+import criaturas.*
+import estudiantes.*
+import casas.*
+import materias.*
+
+describe "test de jarry postre"{
+	
+const inmobilus = new Hechizo(nivelDeDificultad=5)
+const sangre = new OrbeFulminante(nivelDeDificultad=25)
+const imperius = new Imperdonable(nivelDeDificultad=15,danioAutoinflingido=100)
+const sectum = new Sectum(nivelDeDificultad=12)
+
+const centauro = new Criatura(salud=200)
+const hipoglifo = new Criatura(salud=250)
+const basilisco = new Criatura(salud=800)
+const lechuza = new Inmune(salud=300)
+
+const harry = new Estudiante(casa=gryffindor,habilidad=35,salud=200,esSangrePura=false)
+const ron = new Estudiante(casa=gryffindor,habilidad=8,salud=80,esSangrePura=false)
+const draco = new Estudiante(casa=slytherin,habilidad=40,salud=250,esSangrePura=true)
+const bradley = new Estudiante(casa=ravenclaw,habilidad=30,salud=100,esSangrePura=true)
+const hermione = new Estudiante(casa=hufflepuff,habilidad=25,salud=120,esSangrePura=true)
+
+const artesOscuras = new Materia(profesor="Snape",hechizo=imperius)
+
+	test "harry no puede lanzar imperius sin aprenderlo" {
+		assert.throwsExceptionWithMessage("No tienes lo necesario para ejecutar este hechizo", {harry.hacerHechizoA(imperius,centauro)})
+	}
+
+	test "harry lanza inmobilus a centauro"{
+		harry.aprender(inmobilus)
+		harry.hacerHechizoA(inmobilus,centauro)
+		assert.equals(185,centauro.salud())
+	}
+
+	test "harry lanza imperius a centauro"{
+		harry.aprender(imperius)
+		harry.hacerHechizoA(imperius,centauro)
+		assert.equals(150,centauro.salud())
+	}
+	
+	test "ron aprende sectum, no tiene nivel de habilidad pero puede lanzarlo igualmente y se reduce su habilidad en 1"{
+		ron.aprender(sectum)
+		ron.hacerHechizoA(sectum,lechuza)
+		assert.equals(7, ron.habilidad())
+	}
+	
+	test "hermione es peligrosa por ser de sangre y de hufflepuff"{
+		assert.that(hermione.esPeligroso())
+	}
+	
+	test "bradley peligroso por ser experimentado y de ravenclaw"{
+		assert.that(bradley.esPeligroso())
+	}
+	
+	test "ron y harry se anotan a artes oscuras y aprenden imperius pero ron no tiene habilidad para lanzarlo"{
+		assert.equals(imperius, artesOscuras.hechizo())
+		artesOscuras.anotar(harry)
+		artesOscuras.anotar(ron)
+		assert.equals([harry,ron], artesOscuras.alumnos())
+		artesOscuras.dictarMateria()
+		ron.conoce(imperius)
+		harry.conoce(imperius)
+		assert.throwsExceptionWithMessage("No tienes lo necesario para ejecutar este hechizo", {ron.hacerHechizoA(imperius,centauro)})
+	}
+	
+	test "hacen practica en artes oscuras contra un basilisco"{
+		artesOscuras.anotar(harry)
+		artesOscuras.anotar(draco)
+		artesOscuras.dictarMateria()
+		artesOscuras.hacerPractica(basilisco)
+		assert.equals(700, basilisco.salud())
+	}
+	
+	test "bradley usa hechizo de sangre, mata hipoglifo, cambia de casa, y queda en 1 de salud"{
+		bradley.aprender(sangre)
+		bradley.hacerHechizoA(sangre,hipoglifo)
+		assert.equals(0, hipoglifo.salud())
+		assert.equals(1, bradley.salud())
+		assert.notEquals(ravenclaw, bradley.casa())
+	}
+	
+	test "draco aprende sangre y se lo lanza a la lechuza pero es inmune"{
+		draco.aprender(sangre)
+		draco.hacerHechizoA(sangre,lechuza)
+		assert.equals(300, lechuza.salud())
+	}
+}
+
+
+
+
+
+
